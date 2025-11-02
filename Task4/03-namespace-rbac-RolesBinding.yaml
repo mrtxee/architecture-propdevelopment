@@ -1,0 +1,29 @@
+# AdminPupkin → dev-admin
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: AdminPupkin-binding
+subjects:
+  - kind: User
+    name: AdminPupkin
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: dev-admin
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+# DevopsPipkin → cluster-admin
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: DevopsPipkin-binding
+subjects:
+  - kind: User
+    name: DevopsPipkin
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
