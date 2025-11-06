@@ -1,0 +1,63 @@
+# Namespaces
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+
+---
+
+# Roles
+
+# dev-admin — администрирование dev namespace
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: dev-admin
+  namespace: dev
+rules:
+  - apiGroups: [ "", "apps" ]
+    resources: [ "pods", "services", "configmaps", "deployments", "replicasets" ]
+    verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
+  - apiGroups: [ "" ]
+    resources: [ "pods/log" ]
+    verbs: [ "get", "list" ]
+
+---
+# cluster-admin — полный доступ к кластеру
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-admin
+rules:
+  - apiGroups: [ "", "apps" ]
+    resources: [ "pods", "services", "configmaps", "deployments", "replicasets" ]
+    verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
+  - apiGroups: [ "" ]
+    resources: [ "pods/log" ]
+    verbs: [ "get", "list" ]
+
+---
+# cluster-viewer — только просмотр
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-viewer
+rules:
+  - apiGroups: [ "" ]
+    resources: [ "pods", "services", "configmaps" ]
+    verbs: [ "get", "list", "watch" ]
+
+---
+# auditor-reader — аудит безопасности
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: auditor-reader
+rules:
+  - apiGroups: [ "" ]
+    resources: [ "pods", "events", "secrets" ]
+    verbs: [ "get", "list", "watch" ]
+  - apiGroups: [ "rbac.authorization.k8s.io" ]
+    resources: [ "roles", "rolebindings" ]
+    verbs: [ "get", "list", "watch" ]
